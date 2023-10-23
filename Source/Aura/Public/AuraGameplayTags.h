@@ -40,7 +40,7 @@ public:
 	FGameplayTag InputTag_5;
 	FGameplayTag InputTag_6;
 
-
+	
 
 
 
