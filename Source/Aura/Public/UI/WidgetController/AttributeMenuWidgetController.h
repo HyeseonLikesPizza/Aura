@@ -10,7 +10,7 @@ struct FGameplayTag;
 struct FAuraAttributeInfo;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAttributeInfoSignature, const FAuraAttributeInfo&, Info);
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerStatPointsChanged, int32, Stat);
 
 UCLASS(BlueprintType, Blueprintable)
 class AURA_API UAttributeMenuWidgetController : public UAuraWidgetController
@@ -24,6 +24,12 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS | Attributes")
 	FAttributeInfoSignature AttributeInfoDelegate;
+
+	UPROPERTY(BlueprintAssignable, Category = "GAS | Attributes")
+	FOnPlayerStatPointsChanged OnAttributePointsDelegate;
+
+	UPROPERTY(BlueprintAssignable, Category = "GAS | Attributes")
+	FOnPlayerStatPointsChanged OnSpellPointsDelegate;
 
 protected:
 

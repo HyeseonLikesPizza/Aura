@@ -2,6 +2,7 @@
 #include "UI/WidgetController/AttributeMenuWidgetController.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Data/AttributeInfo.h"
+#include "Player/AuraPlayerState.h"
 
 
 
@@ -20,6 +21,19 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 		);
 	}
 	
+	AAuraPlayerState* PS = CastChecked<AAuraPlayerState>(PlayerState);
+
+	PS->OnAttributePointsChangedDelegate.AddLambda([this](int32 AP)
+		{
+			OnAttributePointsDelegate.Broadcast(AP);
+		}
+	);
+
+	PS->OnSpellPointsChangedDelegate.AddLambda([this](int32 SP)
+		{
+			OnSpellPointsDelegate.Broadcast(SP);
+		}
+	);
 }
 
 void UAttributeMenuWidgetController::BroadcastInitialValues()
