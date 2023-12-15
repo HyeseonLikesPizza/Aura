@@ -1232,3 +1232,13 @@ LogConfig: Set CVar [[r.Shadow.DetectVertexShaderLayerAtRuntime:1]]
 [2023.12.15-02.06.02:407][453]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
 [2023.12.15-02.06.02:413][453]LogUObjectHash: Compacting FUObjectHashTables data took   1.80ms
 [2023.12.15-02.06.02:452][454]LogPlayLevel: Display: Destroying online subsystem :Context_13
+[2023.12.15-02.13.34:939][559]LogUObjectHash: Compacting FUObjectHashTables data took   2.55ms
+[2023.12.15-02.13.34:966][559]LogFileHelpers: Editor autosave (incl. external actors) for '/Game/Maps/Dungeon' took 0.069
+[2023.12.15-02.13.34:970][559]OBJ SavePackage: Generating thumbnails for [2] asset(s) in package [/Game/Blueprints/UI/AttributeMenu/WBP_AttributeMenu] ([2] browsable assets)...
+[2023.12.15-02.13.34:988][559]OBJ SavePackage:     Rendered thumbnail for [WidgetBlueprint /Game/Blueprints/UI/AttributeMenu/WBP_AttributeMenu.WBP_AttributeMenu]
+[2023.12.15-02.13.34:989][559]OBJ SavePackage: Finished generating thumbnails for package [/Game/Blueprints/UI/AttributeMenu/WBP_AttributeMenu]
+[2023.12.15-02.13.35:002][559]LogPackageLocalizationCache: Processed 45 localized package path(s) for 1 prioritized culture(s) in 0.013244 seconds
+[2023.12.15-02.13.35:039][559]LogSerialization: UsePackageTrailer: 'true'
+[2023.12.15-02.13.35:097][559]LogSavePackage: Moving output files for package: /Temp/Autosaves/Game/Blueprints/UI/AttributeMenu/WBP_AttributeMenu_Auto1
+[2023.12.15-02.13.35:097][559]LogSavePackage: Moving 'C:/Users/HS/Documents/UnrealProject/Aura/Saved/WBP_AttributeMenu_Auto1CF86CE7140CBF912F46893B883E4F6C1.tmp' to 'C:/Users/HS/Documents/UnrealProject/Aura/Saved/Autosaves/Game/Blueprints/UI/AttributeMenu/WBP_AttributeMenu_Auto1.uasset'
+[2023.12.15-02.13.35:098][559]LogFileHelpers: Auto-saving content packages took 0.132
