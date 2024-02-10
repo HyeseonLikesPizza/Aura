@@ -22,3 +22,4 @@
 *.xcworkspace
 *.sln
 *_BuiltData.uasset
+.gitignore

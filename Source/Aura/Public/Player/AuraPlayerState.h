@@ -42,7 +42,6 @@ public:
 
 	void AddToXP(int32 InXP);
 	void AddToLevel(int32 InLevel);
-
 	void AddToAttributePoints(int32 InAP);
 	void AddToSpellPoints(int32 InSP);
 

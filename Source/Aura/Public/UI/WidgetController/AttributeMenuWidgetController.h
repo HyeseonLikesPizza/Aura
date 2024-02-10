@@ -8,9 +8,9 @@ class UAttributeInfo;
 struct FGameplayAttribute;
 struct FGameplayTag;
 struct FAuraAttributeInfo;
+struct FGameplayTag;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAttributeInfoSignature, const FAuraAttributeInfo&, Info);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerStatPointsChanged, int32, Stat);
 
 UCLASS(BlueprintType, Blueprintable)
 class AURA_API UAttributeMenuWidgetController : public UAuraWidgetController
@@ -26,10 +26,12 @@ public:
 	FAttributeInfoSignature AttributeInfoDelegate;
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS | Attributes")
-	FOnPlayerStatPointsChanged OnAttributePointsDelegate;
+	FOnPlayerStatChangedSignature OnAttributePointsDelegate;
 
-	UPROPERTY(BlueprintAssignable, Category = "GAS | Attributes")
-	FOnPlayerStatPointsChanged OnSpellPointsDelegate;
+
+
+	UFUNCTION(BlueprintCallable)
+	void UpgradeAttribute(const FGameplayTag& AttributeTag);
 
 protected:
 
