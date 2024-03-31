@@ -31,17 +31,20 @@ public:
 
 	/* Field Notifies */
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter);
-	FString PlayerName;
-
 	void SetPlayerName(FString InPlayerName);
 	void SetLoadSlotName(FString InLoadSlotName);
+	void SetMapName(FString InMapName);
 
 	FString GetPlayerName() const { return PlayerName; }
 	FString GetLoadSlotName() const { return LoadSlotName; }
+	FString GetMapName() const { return MapName; }
 
 private:
-	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess = "true"));
+	FString PlayerName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess = "true"));
+	FString MapName;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess = "true"))
 	FString LoadSlotName;
