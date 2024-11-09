@@ -18,6 +18,17 @@ enum class ECharacterClass : uint8
 	Ranger
 };
 
+UENUM(BlueprintType)
+enum class EEnemyClass : uint8
+{
+	Demon,
+	Ghoul,
+	Goblin,
+	Mutant
+};
+
+
+
 USTRUCT(BlueprintType)
 struct FCharacterClassDefaultInfo
 {

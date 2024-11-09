@@ -56,6 +56,9 @@ public:
 
 	void SetLevel(int32 InLevel) { Level = InLevel; }
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
+	EEnemyClass EnemyClass = EEnemyClass::Demon;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo() override;
@@ -73,4 +76,9 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<AAuraAIController> AuraAIController;
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void SpawnLoot();
+
+	
 };
