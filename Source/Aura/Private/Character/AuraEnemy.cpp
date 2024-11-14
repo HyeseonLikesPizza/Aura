@@ -4,6 +4,7 @@
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "Aura/Aura.h"
+#include "Aura/AuraLogChannels.h"
 #include "Components/WidgetComponent.h"
 #include "UI/Widget/AuraUserWidget.h"
 #include "AuraGameplayTags.h"
@@ -45,11 +46,19 @@ void AAuraEnemy::PossessedBy(AController* NewController)
 
 	if (!HasAuthority()) return;
 	AuraAIController = Cast<AAuraAIController>(NewController);
-	AuraAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
-	AuraAIController->RunBehaviorTree(BehaviorTree);
-	AuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("HitReacting"), false);
-	AuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("RangedAttacker"), CharacterClass != ECharacterClass::Warrior);
+	UBlackboardComponent* BlackboardComponent = AuraAIController->GetBlackboardComponent();
+
+	if (BlackboardComponent)
+	{
+		BlackboardComponent->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
+		AuraAIController->RunBehaviorTree(BehaviorTree);
+		BlackboardComponent->SetValueAsBool(FName("HitReacting"), false);
+		BlackboardComponent->SetValueAsBool(FName("RangedAttacker"), CharacterClass != ECharacterClass::Warrior);
+
+		
+	}
 }
+
 
 void AAuraEnemy::HighlightActor_Implementation()
 {
@@ -111,9 +120,22 @@ void AAuraEnemy::BeginPlay()
 
 	if (UAuraAttributeSet* AuraAS = Cast<UAuraAttributeSet>(AttributeSet))
 	{
+		UE_LOG(LogAura, Warning, TEXT("Health : %f"), AuraAS->GetHealth());
+
+		if (AuraAIController && AuraAIController->GetBlackboardComponent() && AuraAS)
+		{
+			AuraAIController->GetBlackboardComponent()->SetValueAsFloat(FName("Health"), AuraAS->GetHealth());
+		}
+
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAS->GetHealthAttribute()).AddLambda(
 			[this](const FOnAttributeChangeData& Data)
 			{
+				// 블랙보드 키 값 업데이트
+				if (AuraAIController && AuraAIController->GetBlackboardComponent())
+				{
+					AuraAIController->GetBlackboardComponent()->SetValueAsFloat(FName("Health"), Data.NewValue);
+				}
+
 				OnHealthChanged.Broadcast(Data.NewValue);
 			}
 		);
@@ -135,7 +157,10 @@ void AAuraEnemy::BeginPlay()
 		OnMaxHealthChanged.Broadcast(AuraAS->GetMaxHealth());
 	}
 
-	
+	if (UAuraAttributeSet* AuraAS = Cast<UAuraAttributeSet>(AttributeSet))
+	{
+		
+	}
 	
 }
 

@@ -10,6 +10,7 @@
 #include "AbilitySystemComponent.h"
 #include "AuraGameplayTags.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
+#include "Interaction/BossInterface.h"
 
 
 AAuraProjectile::AAuraProjectile()
@@ -76,7 +77,8 @@ void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, 
 			const FVector DeathImpulse = GetActorForwardVector() * DamageEffectParams.DeathImpulseMagnitude;
 			DamageEffectParams.DeathImpulse = DeathImpulse;
 			const bool bKnockback = FMath::RandRange(1, 100) < DamageEffectParams.KnockbackChance;
-			if (bKnockback)
+			
+			if (!TargetASC->GetAvatarActor()->Implements<UBossInterface>() && bKnockback)
 			{
 				FRotator Rotation = GetActorRotation();
 				Rotation.Pitch = 45.f;

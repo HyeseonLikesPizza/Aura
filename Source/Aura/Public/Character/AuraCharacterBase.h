@@ -81,6 +81,9 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	UPROPERTY(Replicated, BlueprintReadOnly)
+	bool bDead = false;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
 	ECharacterClass CharacterClass = ECharacterClass::Warrior;
 
@@ -98,9 +101,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	FName TailSocketName;
-
-	UPROPERTY(BlueprintReadOnly)
-	bool bDead = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
 	float BaseWalkSpeed = 600.f;
