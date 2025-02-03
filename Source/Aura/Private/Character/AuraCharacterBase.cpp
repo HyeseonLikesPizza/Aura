@@ -11,6 +11,7 @@
 #include "Net/UnrealNetwork.h"
 #include "AbilitySystem/Passive/PassiveNiagaraComponent.h"
 #include "Interaction/BossInterface.h"
+#include "../AuraLogChannels.h"
 
 AAuraCharacterBase::AAuraCharacterBase()
 {
@@ -103,19 +104,18 @@ void AAuraCharacterBase::MulticastHandleDeath_Implementation(const FVector& Deat
 	Weapon->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
 	Weapon->AddImpulse(DeathImpulse * 0.1f, NAME_None, true);
 	
-	
-	if (!this->Implements<UBossInterface>())
+	if (this->Implements<UBossInterface>())
+	{
+		GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+		GetMesh()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+	}
+	else
 	{
 		GetMesh()->SetSimulatePhysics(true);
 		GetMesh()->SetEnableGravity(true);
 		GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
 		GetMesh()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
 		GetMesh()->AddImpulse(DeathImpulse, NAME_None, true);
-	}
-	else
-	{
-		GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
-		GetMesh()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
 	}
 	
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -166,8 +166,17 @@ FVector AAuraCharacterBase::GetCombatSocketLocation_Implementation(const FGamepl
 	{
 		return GetMesh()->GetSocketLocation(TailSocketName);
 	}
+	if (MontageTag.MatchesTagExact(GameplayTags.CombatSocket_Mouth))
+	{
+		return GetMesh()->GetSocketLocation(MouthSocketName);
+	}
 
 	return FVector();
+}
+
+USkeletalMeshComponent* AAuraCharacterBase::GetSkeletalMeshComponent_Implementation()
+{
+	return GetMesh();
 }
 
 bool AAuraCharacterBase::IsDead_Implementation() const

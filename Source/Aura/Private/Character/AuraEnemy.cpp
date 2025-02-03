@@ -12,6 +12,7 @@
 #include "AI/AuraAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/BehaviorTree.h"
+#include "Components/CapsuleComponent.h"
 
 AAuraEnemy::AAuraEnemy()
 {

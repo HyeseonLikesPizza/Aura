@@ -51,6 +51,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	FVector GetCombatSocketLocation(const FGameplayTag& MontageTag);
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	USkeletalMeshComponent* GetSkeletalMeshComponent();
+
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void UpdateWarpTarget(const FVector& Target);
 

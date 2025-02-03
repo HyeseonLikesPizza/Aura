@@ -36,6 +36,7 @@ public:
 	virtual FOnDeathSignature& GetOnDeathDelegate() override;
 	virtual void Knockbacked(const FVector& LaunchVector) override;
 	virtual FVector GetCombatSocketLocation_Implementation(const FGameplayTag& MontageTag) override;
+	virtual USkeletalMeshComponent* GetSkeletalMeshComponent_Implementation();
 	virtual bool IsDead_Implementation() const override;
 	virtual AActor* GetAvatar_Implementation();
 	virtual TArray<FTaggedMontage> GetAttackMontages_Implementation() override;
@@ -101,6 +102,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	FName TailSocketName;
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	FName MouthSocketName;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
 	float BaseWalkSpeed = 600.f;

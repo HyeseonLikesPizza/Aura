@@ -85,6 +85,7 @@ public:
 
 	FGameplayTag Abilities_Fire_FireBolt;
 	FGameplayTag Abilities_Fire_FireBlast;
+	FGameplayTag Abilities_Fire_FireBreath;
 	FGameplayTag Abilities_Lightning_Electrocute;
 	FGameplayTag Abilities_Arcane_ArcaneShards;
 
@@ -98,6 +99,7 @@ public:
 	FGameplayTag CombatSocket_RightHand;
 	FGameplayTag CombatSocket_LeftHand;
 	FGameplayTag CombatSocket_Tail;
+	FGameplayTag CombatSocket_Mouth;
 
 	FGameplayTag Montage_Attack_1;
 	FGameplayTag Montage_Attack_2;
