@@ -104,7 +104,7 @@ void UAuraAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, 
 
 void UAuraAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const
 {
-	// Source = Effect를 발생시킨 액터 / Target = Effect의 타겟 (이 AttributeSet의 소유자)
+	//  Source = Effect를 발생시킨 액터 / Target = Effect의 타겟 (이 AttributeSet의 소유자)
 
 	Props.EffectContextHandle = Data.EffectSpec.GetContext();
 	Props.SourceASC = Props.EffectContextHandle.GetOriginalInstigatorAbilitySystemComponent();

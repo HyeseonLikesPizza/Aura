@@ -3,6 +3,7 @@
 /Content
 /Intermediate
 /Saved
+/Content
 /Build
 /Plugins
 /Assets
@@ -22,4 +23,3 @@
 *.xcworkspace
 *.sln
 *_BuiltData.uasset
-.gitignore
