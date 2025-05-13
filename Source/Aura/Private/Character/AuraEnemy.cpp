@@ -13,6 +13,8 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/SphereComponent.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 
 AAuraEnemy::AAuraEnemy()
 {
@@ -21,6 +23,13 @@ AAuraEnemy::AAuraEnemy()
 	AbilitySystemComponent = CreateDefaultSubobject<UAuraAbilitySystemComponent>("AbilitySystemComponent");
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
+
+	ReflectSphere = CreateDefaultSubobject<USphereComponent>("ReflectSphere");
+	ReflectSphere->SetupAttachment(GetRootComponent());
+	ReflectSphere->SetCollisionObjectType(ECC_Reflect);
+	ReflectSphere->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	ReflectSphere->SetCollisionResponseToAllChannels(ECR_Ignore);
+	ReflectSphere->SetCollisionResponseToChannel(ECC_Reflect, ECR_Overlap);
 
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationRoll = false;
@@ -102,6 +111,19 @@ AActor* AAuraEnemy::GetCombatTarget_Implementation() const
 	return CombatTarget;
 }
 
+void AAuraEnemy::OnReflectSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (bManaReflexActive && OtherActor)
+	{
+		if (auto MoveComp = OtherActor->FindComponentByClass<UProjectileMovementComponent>())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Before reflect, velocity: %s"), *MoveComp->Velocity.ToString());
+		}
+
+		ReflectToPlayer(OtherActor);
+	}
+}
+
 void AAuraEnemy::BeginPlay()
 {
 	Super::BeginPlay();
@@ -163,6 +185,7 @@ void AAuraEnemy::BeginPlay()
 		
 	}
 	
+	ReflectSphere->OnComponentBeginOverlap.AddDynamic(this, &AAuraEnemy::OnReflectSphereOverlap);
 }
 
 
@@ -202,4 +225,39 @@ void AAuraEnemy::StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
 	{
 		AuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("Stunned"), bIsStunned);
 	}
+}
+
+void AAuraEnemy::ReflectToPlayer(AActor* Target)
+{
+	if (!Target || Target->Tags.Contains("Reflected")) return;
+
+	AActor* Player = Target->GetInstigator();
+
+	FVector Direction = (Player->GetActorLocation() - Target->GetActorLocation()).GetSafeNormal();
+	FRotator NewRot = Direction.Rotation();
+
+	Target->SetActorRotation(NewRot);
+	Target->SetActorEnableCollision(false); // 충돌 중단
+
+
+
+	if (UProjectileMovementComponent* MoveComp = Target->FindComponentByClass<UProjectileMovementComponent>())
+	{
+		MoveComp->bIsHomingProjectile = false;
+		MoveComp->HomingTargetComponent = nullptr;
+		MoveComp->Velocity = Direction * MoveComp->InitialSpeed;
+		MoveComp->UpdateComponentVelocity();
+	}
+
+	Target->Tags.Add("Reflected");
+
+	// 0.1초 후 다시 충돌 켜기
+	FTimerHandle Handle;
+	GetWorld()->GetTimerManager().SetTimer(Handle, [Target]()
+		{
+			if (IsValid(Target))
+			{
+				Target->SetActorEnableCollision(true);
+			}
+		}, 0.1f, false);
 }

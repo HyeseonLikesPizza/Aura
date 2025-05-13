@@ -4,6 +4,7 @@
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "Actor/AuraProjectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "AuraGameplayTags.h"
 
 FString UAuraFireBolt::GetDescription(int32 Level)
 {
@@ -130,6 +131,12 @@ void UAuraFireBolt::SpawnProjectiles(const FVector& ProjectileTargetLocation, co
 			GetOwningActorFromActorInfo(),
 			Cast<APawn>(GetOwningActorFromActorInfo()),
 			ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+
+		Projectile->SetOwner(Cast<AActor>(GetAvatarActorFromActorInfo()));
+		APawn* Player = Cast<APawn>(GetAvatarActorFromActorInfo());
+		Projectile->SetInstigator(Player);
+		Projectile->Tags.Add(FAuraGameplayTags::Get().Abilities_Fire_FireBolt.GetTagName());
+		
 
 		Projectile->DamageEffectParams = MakeDamageEffectParamsFromClassDefaults();
 

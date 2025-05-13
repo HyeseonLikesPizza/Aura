@@ -11,6 +11,7 @@
 #include "AuraGameplayTags.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "Interaction/BossInterface.h"
+#include "../AuraLogChannels.h"
 
 
 AAuraProjectile::AAuraProjectile()
@@ -26,6 +27,8 @@ AAuraProjectile::AAuraProjectile()
 	Sphere->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
 	Sphere->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Overlap);
 	Sphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+
+	
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>("ProjectileMovement");
 	ProjectileMovement->InitialSpeed = 550.f;
@@ -67,6 +70,13 @@ void AAuraProjectile::OnHit()
 
 void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	UE_LOG(LogAura, Warning, TEXT("OtherComp ObjectType == %s"),*UEnum::GetValueAsString(OtherComp->GetCollisionObjectType()));
+
+	if (OtherComp->GetCollisionObjectType() == ECC_GameTraceChannel5)
+	{
+		UE_LOG(LogAura, Warning, TEXT("OtherComp == ECC_GameTraceChannel5 , return"));
+		return;
+	}
 	if (!IsValidOverlap(OtherActor)) return;
 	if (!bHit) OnHit();
 
