@@ -40,12 +40,6 @@ public:
 	virtual AActor* GetCombatTarget_Implementation() const override;
 	/* End Combat Interface */
 
-	UFUNCTION()
-	virtual void OnReflectSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool bManaReflexActive = false;
-
 	UPROPERTY(BlueprintAssignable)
 	FOnAttributeChangedSignature OnHealthChanged;
 
@@ -74,12 +68,6 @@ protected:
 	virtual void InitAbilityActorInfo() override;
 	virtual void InitializeDefaultAttributes() const override;
 	virtual void StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount) override;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	TObjectPtr<USphereComponent> ReflectSphere;
-
-	UFUNCTION()
-	void ReflectToPlayer(AActor* Target);
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
 	int32 Level = 1;

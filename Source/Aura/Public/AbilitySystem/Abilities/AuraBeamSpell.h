@@ -17,6 +17,9 @@ public:
 	void StoreMouseDataInfo(const FHitResult& HitResult);
 
 	UFUNCTION(BlueprintCallable)
+	void StoreActorDataInfo(AActor* Target);
+
+	UFUNCTION(BlueprintCallable)
 	void StoreOwnerVariables();
 
 	UFUNCTION(BlueprintCallable)
@@ -34,10 +37,10 @@ public:
 protected:
 
 	UPROPERTY(BlueprintReadWrite, Category = "Beam")
-	FVector MouseHitLocation;
+	FVector TargetLocation;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Beam")
-	TObjectPtr<AActor> MouseHitActor;
+	TObjectPtr<AActor> TargetActor;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Beam")
 	TObjectPtr<APlayerController> OwnerPlayerController;

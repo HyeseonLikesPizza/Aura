@@ -9,8 +9,21 @@ void UAuraBeamSpell::StoreMouseDataInfo(const FHitResult& HitResult)
 {
 	if (HitResult.bBlockingHit)
 	{
-		MouseHitLocation = HitResult.ImpactPoint;
-		MouseHitActor = HitResult.GetActor();
+		TargetLocation = HitResult.ImpactPoint;
+		TargetActor = HitResult.GetActor();
+	}
+	else
+	{
+		CancelAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true);
+	}
+}
+
+void UAuraBeamSpell::StoreActorDataInfo(AActor* Target)
+{
+	if (Target)
+	{
+		TargetLocation = Target->GetActorLocation();
+		TargetActor = Target;
 	}
 	else
 	{
@@ -52,12 +65,12 @@ void UAuraBeamSpell::TraceFirstTarget(const FVector& BeamTargetLocation)
 
 			if (HitResult.bBlockingHit)
 			{
-				MouseHitLocation = HitResult.ImpactPoint;
-				MouseHitActor = HitResult.GetActor();
+				TargetLocation = HitResult.ImpactPoint;
+				TargetActor = HitResult.GetActor();
 			}
 		}
 	}
-	if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(MouseHitActor))
+	if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(TargetActor))
 	{
 		if (!CombatInterface->GetOnDeathDelegate().IsAlreadyBound(this, &UAuraBeamSpell::PrimaryTargetDied))
 		{
@@ -70,7 +83,7 @@ void UAuraBeamSpell::StoreAdditionalTargets(TArray<AActor*>& OutAdditionalTarget
 {
 	TArray<AActor*> ActorsToIgnore;
 	ActorsToIgnore.Add(GetAvatarActorFromActorInfo());
-	ActorsToIgnore.Add(MouseHitActor);
+	ActorsToIgnore.Add(TargetActor);
 
 	TArray<AActor*> OverlappingActors;
 	
@@ -79,12 +92,12 @@ void UAuraBeamSpell::StoreAdditionalTargets(TArray<AActor*>& OutAdditionalTarget
 		OverlappingActors,
 		ActorsToIgnore,
 		850.f,
-		MouseHitActor->GetActorLocation());
+		TargetActor->GetActorLocation());
 
 	int32 NumAdditionalTargets = FMath::Min(GetAbilityLevel()-1, MaxNumShockTarget);
 	//int32 NumAdditionalTargets = 5;
 
-	UAuraAbilitySystemLibrary::GetClosestTargets(NumAdditionalTargets, OverlappingActors, OutAdditionalTargets, MouseHitActor->GetActorLocation());
+	UAuraAbilitySystemLibrary::GetClosestTargets(NumAdditionalTargets, OverlappingActors, OutAdditionalTargets, TargetActor->GetActorLocation());
 
 	for (AActor* Target : OutAdditionalTargets)
 	{

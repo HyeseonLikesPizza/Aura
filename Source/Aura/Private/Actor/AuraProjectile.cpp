@@ -12,6 +12,7 @@
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "Interaction/BossInterface.h"
 #include "../AuraLogChannels.h"
+#include "Character/AuraCharacterBase.h"
 
 
 AAuraProjectile::AAuraProjectile()
@@ -70,13 +71,6 @@ void AAuraProjectile::OnHit()
 
 void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	UE_LOG(LogAura, Warning, TEXT("OtherComp ObjectType == %s"),*UEnum::GetValueAsString(OtherComp->GetCollisionObjectType()));
-
-	if (OtherComp->GetCollisionObjectType() == ECC_GameTraceChannel5)
-	{
-		UE_LOG(LogAura, Warning, TEXT("OtherComp == ECC_GameTraceChannel5 , return"));
-		return;
-	}
 	if (!IsValidOverlap(OtherActor)) return;
 	if (!bHit) OnHit();
 
